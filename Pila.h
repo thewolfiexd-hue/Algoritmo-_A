@@ -20,6 +20,7 @@
 #include<ctime>
 #include <stdexcept>
 template <typename T>
+
 class Pila {
 private:
     struct Nodo {
