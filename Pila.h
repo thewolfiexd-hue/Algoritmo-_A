@@ -1,3 +1,6 @@
+#pragma once
+/*se guarda movimientos en orden LIFO, osea 
+sirve para reconstruir o recorrer los pasos de una solución 7.7 */
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -29,23 +32,28 @@ private:
         Nodo(const T& d, Nodo* a) : dato(d), abajo(a) {}
     };
     Nodo* cima;
-    int cantidad;
+    int cant;
 public:
-    Pila() : cima(nullptr), cantidad(0) {}
+    Pila() : cima(nullptr), cant(0) {}
     ~Pila() { vaciar(); }
     Pila(const Pila&) = delete;
     Pila& operator=(const Pila&) = delete;
-    void apilar(const T& elemento) { cima = new Nodo(elemento, cima); cantidad++; }
+    void apilar(const T& elemento) { 
+        cima = new Nodo(elemento, cima);
+        cant++;
+    }
     bool desapilar(T& salida) {
         if (cima == nullptr) return false;
         Nodo* temporal = cima;
         salida = temporal->dato;
         cima = cima->abajo;
         delete temporal;
-        cantidad--;
+        cant--;
         return true;
     }
     bool estaVacia() const { return cima == nullptr; }
-    int tamano() const { return cantidad; }
-    void vaciar() { T descarte; while (desapilar(descarte)) {} }
+    int tamano() const { return cant; }
+    void vaciar() { 
+        T descarte;
+        while (desapilar(descarte)) {} }
 };

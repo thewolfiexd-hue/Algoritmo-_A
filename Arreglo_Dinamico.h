@@ -1,3 +1,5 @@
+#pragma once
+/*guarda elementos en un arreglo que aumenta de tamaño cuando se llena*/
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
@@ -57,6 +59,6 @@ public:
 		}
 		return datos[indice];
 	}
-	int tamano() const { return cant; }
+	int tamano() const { return cant; } //vaciar el arreglo 
 	void vaciar() { cant = 0; }
 };

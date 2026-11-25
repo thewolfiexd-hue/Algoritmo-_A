@@ -1,9 +1,5 @@
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_primitives.h>
-#include<allegro5/allegro_audio.h>
-#include<allegro5/allegro_acodec.h>
+#pragma once
+//se usa para guardar y ordenar puntaciones
 #include<string>
 #include<iostream>
 #include<iomanip>
@@ -26,13 +22,13 @@ private:
 	struct Nodo {
 		T dato;
 		Nodo* sig; //siguiente
-		explicit Nodo(const T& d):dato(d),sig(nullptr){}
+		explicit Nodo(const T& d) :dato(d), sig(nullptr) {}
 	};
 	Nodo* cabeza;
 	Nodo* cola;
 	int cant;
 public:
-	Lista_Ligada():cabeza(nullptr),cola(nullptr),cant(0){}
+	Lista_Ligada() :cabeza(nullptr), cola(nullptr), cant(0) {}
 	~Lista_Ligada() { vaciar(); }
 	Lista_Ligada(const Lista_Ligada&) = delete;
 	Lista_Ligada& operator=(const Lista_Ligada&) = delete;
@@ -40,7 +36,7 @@ public:
 	void agregar(const T& dato) {
 		Nodo* nuevo = new Nodo(dato);
 		if (cola == nullptr) cabeza = cola = nuevo;
-		else { 
+		else {
 			cola->sig = nuevo;
 			cola = nuevo;
 		}
@@ -63,7 +59,13 @@ public:
 		return actual->dato;
 	}
 	int tamano()const { return cant; }
-	void vaciar() {
+	template<typename F>
+	void paraCada(F funcion)const {//recorre la lista una sola vez
+		for (const Nodo* actual = cabeza;actual != nullptr;actual = actual->sig) {
+			funcion(actual->dato);
+		}
+	}
+	void vaciar() {//libera todos los nodos
 		while (cabeza != nullptr) {
 			Nodo* temporal = cabeza;
 			cabeza = cabeza->sig;
@@ -81,9 +83,9 @@ public:
 
 	}
 private:
-	static Nodo* mezclar(Nodo* a, Nodo* b, bool(*precede)(const T&, const T&)) {
+	static Nodo* mezclar(Nodo* a, Nodo* b, bool(*precede)(const T&, const T&)) { //mexla dos sublistas ya ordenadas en una sola
 		Nodo* resultado = nullptr;
-		Nodo** ultimo = &resultado;
+		Nodo** ultimo = &resultado;//se enlanza con la siguiente nodo
 		while (a != nullptr && b != nullptr) {
 			if (precede(b->dato, a->dato)) { 
 				*ultimo = b;
@@ -95,10 +97,10 @@ private:
 			}
 			ultimo = &(*ultimo)->sig;
 		}
-		*ultimo = (a != nullptr) ? a : b;
+		*ultimo = (a != nullptr) ? a : b;// lo que sobra ya esta ordenado
 		resultado;
 	}
-	static Nodo* ordenarNodos(Nodo* inicio, bool(*precede)(const T&, const T&)) {
+	static Nodo* ordenarNodos(Nodo* inicio, bool(*precede)(const T&, const T&)) { //divide la lista a la mitad
 		if (inicio == nullptr || inicio->sig == nullptr) return inicio;
 		Nodo* lento = inicio;
 		Nodo* rapido = inicio->sig;

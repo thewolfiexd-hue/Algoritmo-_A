@@ -1,9 +1,5 @@
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_primitives.h>
-#include<allegro5/allegro_audio.h>
-#include<allegro5/allegro_acodec.h>
+#pragma once
+// se usa para elegir el tablero con menor costo estimado
 #include<string>
 #include<iostream>
 #include<iomanip>
@@ -49,6 +45,7 @@ private:
 		int nuevaCapacidad = cap*2;
 		T* nuevo = new T[nuevaCapacidad];
 		for (int i = 0; i < cap;i++) nuevo[i] = datos[i];
+		delete[] datos;
 		delete = nuevo;
 		cap = nuevaCapacidad;
 	}
